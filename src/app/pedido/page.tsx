@@ -90,61 +90,65 @@ export default function Pedido(){
     <div className="container mx-auto p-5">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="nome" className="block mb-2">Nome:</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            value={formData.nome}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block mb-2">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="idade" className="block mb-2">Idade:</label>
-          <input
-            type="number"
-            id="idade"
-            name="idade"
-            value={formData.idade}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="endereco" className="block mb-2">Endereço:</label>
+          <label htmlFor="clienteID" className="block mb-2">Cliente ID:</label>
           <select
-            id="endereco"
-            name="enderecoId"
-            value={formData.enderecoId}
-            onChange={handleEnderecoChange}
+            id="clienteID"
+            name="clienteID"
+            value={formData.clienteID}
+            onChange={handleClienteChange}
             required
             className="border p-2 w-full text-black"
           >
-            <option value="">Selecione um endereço</option>
-            {enderecos.map(endereco => (
-              <option key={endereco.id} value={endereco.id}>{endereco.rua}, {endereco.bairro}</option>
+            <option value="">Selecione um cliente</option>
+            {clientes.map(cliente => (
+              <option key={cliente.id} value={cliente.id}>{cliente.nome}</option>
             ))}
           </select>
         </div>
-
+  
+        <div>
+          <label htmlFor="valores" className="block mb-2">Valores:</label>
+          <input
+            type="text"
+            id="valores"
+            name="valores"
+            value={formData.valores}
+            onChange={handleChange}
+            required
+            className="border p-2 w-full text-black"
+          />
+        </div>
+  
+        <div>
+          <label htmlFor="data" className="block mb-2">Data:</label>
+          <input
+            type="date"
+            id="data"
+            name="data"
+            value={formData.data}
+            onChange={handleChange}
+            required
+            className="border p-2 w-full text-black"
+          />
+        </div>
+  
+        <div>
+          <label htmlFor="produtosID" className="block mb-2">Produtos ID:</label>
+          <select
+            id="produtosID"
+            name="produtosID"
+            value={formData.produtosID}
+            onChange={handleProdutosChange}
+            required
+            className="border p-2 w-full text-black"
+          >
+            <option value="">Selecione um produto</option>
+            {Produtos.map(produto => (
+              <option key={produto.id} value={produto.id}>{produto.nome}</option>
+            ))}
+          </select>
+        </div>
+  
         <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:underline">Enviar</button>
       </form>
       <button
@@ -156,5 +160,4 @@ export default function Pedido(){
       </button>
     </div>
   );
-   
 }
