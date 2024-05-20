@@ -26,7 +26,7 @@ export default function Produto() {
       valor: formData.valor
     };
 
-    axios.post('http://127.0.0.1:8000/produto/', dados)
+    axios.post('http://127.0.0.1:8000/produtos/', dados)
       .then(response => {
         console.log('Resposta do servidor:', response.data);
         alert('Obrigado! Seu produto foi registrado.');
@@ -96,5 +96,6 @@ export default function Produto() {
         Voltar
       </button>
     </div>
-  );
+
+		  );
 }

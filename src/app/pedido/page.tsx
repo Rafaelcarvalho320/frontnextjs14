@@ -2,12 +2,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-export default function Pedido(){
+export default function Pedido() {
   const [formData, setFormData] = useState({
     clienteID: '',
     valores: '',
     data: '',
-    produtosID: '',
+    produtosID: [], 
   });
   const [clientes, setClientes] = useState([]);
   const [Produtos, setProdutos] = useState([]);
@@ -31,16 +31,16 @@ export default function Pedido(){
   }, []);
 
   const handleChange = (e) => {
-    const {name, value } = e.target;
+    const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
       [name]: value
     }));
   };
 
-  const handleClienteChange = (e) =>{
+  const handleClienteChange = (e) => {
     const clienteID = e.target.value;
-    const clienteSelecionado = clientes.find(cliente_id => cliente_id.id === parseInt(clienteID));
+    const clienteSelecionado = clientes.find(cliente => cliente.id === parseInt(clienteID));
     console.log('Cliente Selecionado:', clienteSelecionado);
     setFormData(prevState => ({
       ...prevState,
@@ -48,17 +48,17 @@ export default function Pedido(){
     }));
   };
 
-  const handleProdutosChange = (e) =>{
-    const produtosID = e.target.value;
-    const produtosSelecionado = Produtos.find(produtos_id => produtos_id.id === parseInt(produtosID));
-    console.log('Produto Selecionado:', produtosSelecionado);
+  const handleProdutosChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions);
+    const produtosID = selectedOptions.map(option => parseInt(option.value));
+    console.log('Produtos Selecionados:', produtosID);
     setFormData(prevState => ({
       ...prevState,
       produtosID: produtosID
     }));
   };
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const dados = {
@@ -69,20 +69,20 @@ export default function Pedido(){
     };
 
     axios.post('http://127.0.0.1:8000/pedido/', dados)
-     .then(response => {
-      console.log('Resposta do servidor:', response.data);
-      alert('Obrigado! Sua mensagem foi recebida.');
-     })
-     .catch(error => {
-      console.error('Erro ao enviar formulário:', error);
-      alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
-     });
+      .then(response => {
+        console.log('Resposta do servidor:', response.data);
+        alert('Obrigado! Sua mensagem foi recebida.');
+      })
+      .catch(error => {
+        console.error('Erro ao enviar formulário:', error);
+        alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
+      });
 
     setFormData({
       clienteID: '',
       valores: '',
       data: '',
-      produtosID: '',
+      produtosID: [],
     });
   };
 
@@ -90,7 +90,7 @@ export default function Pedido(){
     <div className="container mx-auto p-5">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="clienteID" className="block mb-2">Cliente ID:</label>
+          <label htmlFor="clienteID" className="block mb-2">Cliente:</label>
           <select
             id="clienteID"
             name="clienteID"
@@ -105,7 +105,7 @@ export default function Pedido(){
             ))}
           </select>
         </div>
-  
+
         <div>
           <label htmlFor="valores" className="block mb-2">Valores:</label>
           <input
@@ -118,7 +118,7 @@ export default function Pedido(){
             className="border p-2 w-full text-black"
           />
         </div>
-  
+
         <div>
           <label htmlFor="data" className="block mb-2">Data:</label>
           <input
@@ -131,7 +131,7 @@ export default function Pedido(){
             className="border p-2 w-full text-black"
           />
         </div>
-  
+
         <div>
           <label htmlFor="produtosID" className="block mb-2">Produtos ID:</label>
           <select
@@ -140,15 +140,16 @@ export default function Pedido(){
             value={formData.produtosID}
             onChange={handleProdutosChange}
             required
+            multiple
             className="border p-2 w-full text-black"
           >
-            <option value="">Selecione um produto</option>
+            <option value="">Selecione um ou mais produtos</option>
             {Produtos.map(produto => (
-              <option key={produto.id} value={produto.id}>{produto.nome}</option>
+              <option key={produto.id} value={produto.id}>{produto.nome} - {produto.marca} - {produto.valor}</option>
             ))}
           </select>
         </div>
-  
+
         <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:underline">Enviar</button>
       </form>
       <button
