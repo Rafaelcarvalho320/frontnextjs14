@@ -20,10 +20,10 @@ export default function Home() {
       <h1 className="text-4xl font-bold text-center mb-7">Ver Lista:</h1>
 
       <div className="flex flex-col space-y-4">
-        <Link href="/cliente" className="hover:underline">Cliente</Link>
-        <Link href="/endereco" className="hover:underline">Endereço</Link>
-        <Link href="/pedido" className="hover:underline">Pedido</Link>
-        <Link href="/produto" className="hover:underline">Produtos</Link>
+        <Link href="/listcliente" className="hover:underline">Clientes</Link>
+        <Link href="/listendereco" className="hover:underline">Endereço</Link>
+        <Link href="/listpedido" className="hover:underline">Pedidos</Link>
+        <Link href="/listproduto" className="hover:underline">Produtos</Link>
       </div>
     </div>
   </div>
