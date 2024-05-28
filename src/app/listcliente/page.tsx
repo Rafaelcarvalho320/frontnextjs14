@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Typography, List, ListItem, ListItemText, ListItemIcon, Button } from '@mui/material';
+import PersonIcon from '@mui/icons-material/Person';
 
 export default function Clientes() {
   const [clientes, setClientes] = useState([]);
@@ -31,51 +33,35 @@ export default function Clientes() {
   };
 
   return (
-    <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-4">
-        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Clientes</h5>
-      </div>
-      <div className="flow-root">
-        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-          {clientes.length > 0 ? (
-            clientes.map(cliente => {
-              console.log('Cliente:', cliente);
-              return (
-                <li key={cliente.id} className="py-3 sm:py-4">
-                  <div className="flex items-center">
-                    <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white">
-                      <span className="mr-2">ID:</span>
-                      {cliente.id}
-                    </div>
-                    <div className="flex-1 min-w-0 ml-4">
-                      <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
-                        {cliente.nome}
-                      </p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        Email: {cliente.email}
-                      </p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        Idade: {cliente.idade} anos
-                      </p>
-                      <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                        Endereço: {getEndereco(cliente.endereco)}
-                      </p>
-                    </div>
-                  </div>
-                </li>
-              );
-            })
-          ) : (
-            <p>Nenhum cliente encontrado.</p>
-          )}
-        </ul>
-      </div>
-      <button
-        type="button"
-        className="container flex mt-12 justify-between mb-8 hover:underline"
-        onClick={() => window.history.back()}>
-          Voltar
-      </button>
-    </div>
+    <Box sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+      <Typography variant="h5" mb={4} fontWeight="bold" color="text.primary">Clientes</Typography>
+      <List>
+        {clientes.length > 0 ? (
+          clientes.map(cliente => (
+            <ListItem key={cliente.id} alignItems="flex-start" divider>
+              <ListItemIcon>
+                <PersonIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography variant="h6" component="span" color="text.primary">{cliente.nome}</Typography>}
+                secondary={
+                  <>
+                    <Typography variant="body2" color="text.secondary">ID: {cliente.id}</Typography>
+                    <Typography variant="body2" color="text.secondary">Email: {cliente.email}</Typography>
+                    <Typography variant="body2" color="text.secondary">Idade: {cliente.idade} anos</Typography>
+                    <Typography variant="body2" color="text.secondary">Endereço: {getEndereco(cliente.endereco)}</Typography>
+                  </>
+                }
+              />
+            </ListItem>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.secondary">Nenhum cliente encontrado.</Typography>
+        )}
+      </List>
+      <Button variant="outlined" onClick={() => window.history.back()}>
+            Voltar
+          </Button>
+    </Box>
   );
 }

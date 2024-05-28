@@ -1,6 +1,15 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 export default function Cliente() {
   const [formData, setFormData] = useState({
@@ -9,7 +18,7 @@ export default function Cliente() {
     idade: '',
     enderecoId: '',
     rua: '',
-    bairro: '', 
+    bairro: '',
   });
   const [enderecos, setEnderecos] = useState([]);
 
@@ -42,15 +51,14 @@ export default function Cliente() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-  
+
     const dados = {
       nome: formData.nome,
       email: formData.email,
       idade: formData.idade,
       endereco: formData.enderecoId 
     };
-  
+
     axios.post('http://127.0.0.1:8000/cliente/', dados)
       .then(response => {
         console.log('Resposta do servidor:', response.data);
@@ -60,7 +68,7 @@ export default function Cliente() {
         console.error('Erro ao enviar formulário:', error);
         alert('Ocorreu um erro ao enviar o formulário. Por favor, tente novamente.');
       });
-  
+
     setFormData({
       nome: '',
       email: '',
@@ -68,76 +76,65 @@ export default function Cliente() {
       enderecoId: '',
     });
   };
-  
 
   return (
-    <div className="container mx-auto p-5">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="nome" className="block mb-2">Nome:</label>
-          <input
-            type="text"
-            id="nome"
-            name="nome"
-            value={formData.nome}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="email" className="block mb-2">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="idade" className="block mb-2">Idade:</label>
-          <input
-            type="number"
-            id="idade"
-            name="idade"
-            value={formData.idade}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="endereco" className="block mb-2">Endereço:</label>
-          <select
+    <Box component="form" onSubmit={handleSubmit} sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+      <FormControl fullWidth>
+        <TextField
+          label="Nome"
+          id="nome"
+          name="nome"
+          value={formData.nome}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Email"
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Idade"
+          type="number"
+          id="idade"
+          name="idade"
+          value={formData.idade}
+          onChange={handleChange}
+          required
+        />
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="endereco-label">Endereço</InputLabel>
+          <Select
+            labelId="endereco-label"
             id="endereco"
             name="enderecoId"
             value={formData.enderecoId}
             onChange={handleEnderecoChange}
             required
-            className="border p-2 w-full text-black"
           >
-            <option value="">Selecione um endereço</option>
+            <MenuItem value="">
+              <em>Selecione um endereço</em>
+            </MenuItem>
             {enderecos.map(endereco => (
-              <option key={endereco.id} value={endereco.id}>{endereco.rua}, {endereco.bairro}</option>
+              <MenuItem key={endereco.id} value={endereco.id}>
+                {endereco.rua}, {endereco.bairro}
+              </MenuItem>
             ))}
-          </select>
-        </div>
-
-        <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:underline">Enviar</button>
-      </form>
-      <button
-        type="button"
-        className="container flex mt-12 justify-between mb-8 hover:underline"
-        onClick={() => window.history.back()}
-      >
-        Voltar
-      </button>
-    </div>
+          </Select>
+        </FormControl>
+        <Stack direction="row" spacing={6} sx={{ m: 2 }}>
+          <Button variant="contained" type="submit" endIcon={<SendIcon />}>
+            Enviar
+          </Button>
+          <Button variant="outlined" onClick={() => window.history.back()}>
+            Voltar
+          </Button>
+        </Stack>
+      </FormControl>
+    </Box>
   );
 }

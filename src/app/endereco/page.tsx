@@ -1,6 +1,12 @@
 "use client";
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useState,useRef} from 'react';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import FormControl from '@mui/material/FormControl';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 
 export default function Endereco() {
   const [formData, setFormData] = useState({
@@ -52,44 +58,35 @@ export default function Endereco() {
 
    
     return (
-        <div className="container mx-auto p-5">
-          <form onSubmit={handleSubmit} className="space-y-4">
-            
-            <fieldset className="p-4 border border-gray-300 rounded-lg my-4 bg-grey-200">
-              <legend className="bg-yellow-200 text-black px-1 rounded">Endereço:</legend>
-              <div>
-                <label htmlFor="rua" className="block mb-2">Rua</label>
-                <input type="text"
-                id="rua"
-                name="rua"
-                value={formData.rua}
-                onChange={handleChange}
-                required
-                className="border p-2 w-full text-black"
-                 />
-              </div>
-              <div>
-                <label htmlFor="bairro" className="block mb-2">Bairro</label>
-                <input 
-                type="text"
-                id="bairro"
-                name="bairro"
-                value={formData.bairro}
-                onChange={handleChange}
-                required
-                className="border p-2 w-full text-black" 
-                />
-              </div>
-            </fieldset>
-    
-            <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:underline">Enviar</button>
-          </form>
-          <button
-          type="button"
-          className=" mt-10 container flex justify-between mb-8 hover:underline"
-          onClick={()=> window.history.back()}>Voltar</button>
-        </div>
-      );
-
-
-}
+      <Box component="form" onSubmit={handleSubmit} sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+          <FormControl fullWidth>
+        <TextField
+          label="Rua"
+          id="rua"
+          name="rua"
+          value={formData.rua}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Bairro"
+          type="bairro"
+          id="bairro"
+          name="bairro"
+          value={formData.bairro}
+          onChange={handleChange}
+          required
+        />
+        <Stack direction="row" spacing={6} sx={{ m: 2 }}>
+          <Button variant="contained" type="submit" endIcon={<SendIcon />}>
+            Enviar
+          </Button>
+          <Button variant="outlined" onClick={() => window.history.back()}>
+            Voltar
+          </Button>
+        </Stack>
+      </FormControl>
+    </Box>
+  );
+}      
+         
