@@ -1,61 +1,50 @@
 "use client";
 
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Box, Typography, List, ListItem, ListItemText, ListItemIcon, Button } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
 
-export default function Enderecos(){
-    const [enderecos, setEnderecos] = useState([]);
+export default function Enderecos() {
+  const [enderecos, setEnderecos] = useState([]);
 
-    useEffect(() => {
-        axios.get('http://127.0.0.1:8000/endereco/')
-          .then(response =>{
-            console.log('Dados dos clientes:', response.data);
-            setEnderecos(response.data);
-          })
-          .catch(error => console.error('Erro ao recuperar endereços:', error));
-    },[]);
+  useEffect(() => {
+    axios.get('http://127.0.0.1:8000/endereco/')
+      .then(response => {
+        console.log('Dados dos endereços:', response.data);
+        setEnderecos(response.data);
+      })
+      .catch(error => console.error('Erro ao recuperar endereços:', error));
+  }, []);
 
-    return (
-        <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-          <div className="flex items-center justify-between mb-4">
-            <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Endereços</h5>
-          </div>
-          <div className="flow-root">
-            <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-              {enderecos.length > 0 ? (
-                enderecos.map(endereco => {
-                  console.log('Endereço:', endereco);
-                  return (
-                    <li key={endereco.id} className="py-3 sm:py-4">
-                      <div className="flex items-center">
-                        <div className="inline-flex items-center text-sm font-semibold text-gray-900 dark:text-white">
-                          <span className="mr-2">ID:</span>
-                          {endereco.id}
-                        </div>
-                        <div className="flex-1 min-w-0 ml-4">
-                          <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
-                             {endereco.rua}
-                          </p>
-                          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                            Bairro: {endereco.bairro}
-                          </p>
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })
-              ) : (
-                <p>Nenhum Endereço encontrado.</p>
-              )}
-            </ul>
-          </div>
-          <button
-            type="button"
-            className="container flex mt-12 justify-between mb-8 hover:underline"
-            onClick={() => window.history.back()}>
-              Voltar
-          </button>
-        </div>
-      );
+  return (
+    <Box sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+      <Typography variant="h5" mb={4} fontWeight="bold" color="text.primary">Endereços</Typography>
+      <List>
+        {enderecos.length > 0 ? (
+          enderecos.map(endereco => (
+            <ListItem key={endereco.id} alignItems="flex-start" divider>
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography variant="h6" component="span" color="text.primary">{endereco.rua}</Typography>}
+                secondary={
+                  <>
+                    <Typography variant="body2" color="text.secondary">ID: {endereco.id}</Typography>
+                    <Typography variant="body2" color="text.secondary">Bairro: {endereco.bairro}</Typography>
+                  </>
+                }
+              />
+            </ListItem>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.secondary">Nenhum endereço encontrado.</Typography>
+        )}
+      </List>
+      <Button variant="outlined" onClick={() => window.history.back()}>
+        Voltar
+      </Button>
+    </Box>
+  );
 }
-
