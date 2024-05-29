@@ -70,7 +70,6 @@ export default function Endereco() {
         />
         <TextField
           label="Bairro"
-          type="bairro"
           id="bairro"
           name="bairro"
           value={formData.bairro}

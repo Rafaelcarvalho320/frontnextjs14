@@ -1,6 +1,16 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from '@mui/material/Button';
+import SendIcon from '@mui/icons-material/Send';
+import Stack from '@mui/material/Stack';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import { Checkbox, ListItemText } from '@mui/material';
 
 export default function Pedido() {
   const [formData, setFormData] = useState({
@@ -48,14 +58,14 @@ export default function Pedido() {
     }));
   };
 
-  const handleProdutosChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions);
-    const produtosID = selectedOptions.map(option => parseInt(option.value));
-    console.log('Produtos Selecionados:', produtosID);
-    setFormData(prevState => ({
-      ...prevState,
-      produtosID: produtosID
-    }));
+  const handleProdutosChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setFormData({
+      ...formData,
+      produtosID: typeof value === 'string' ? value.split(',') : value,
+    });
   };
 
   const handleSubmit = (e) => {
@@ -87,78 +97,77 @@ export default function Pedido() {
   };
 
   return (
-    <div className="container mx-auto p-5">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="clienteID" className="block mb-2">Cliente:</label>
-          <select
+    <Box component="form" onSubmit={handleSubmit} sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+      <FormControl fullWidth>
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="clienteID-label">Cliente</InputLabel>
+          <Select
+            labelId="clienteID-label"
             id="clienteID"
             name="clienteID"
             value={formData.clienteID}
             onChange={handleClienteChange}
             required
-            className="border p-2 w-full text-black"
           >
-            <option value="">Selecione um cliente</option>
-            {clientes.map(cliente => (
-              <option key={cliente.id} value={cliente.id}>{cliente.nome}</option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="valores" className="block mb-2">Valores:</label>
-          <input
-            type="text"
-            id="valores"
-            name="valores"
-            value={formData.valores}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="data" className="block mb-2">Data:</label>
-          <input
-            type="date"
-            id="data"
-            name="data"
-            value={formData.data}
-            onChange={handleChange}
-            required
-            className="border p-2 w-full text-black"
-          />
-        </div>
-
-        <div>
-          <label htmlFor="produtosID" className="block mb-2">Produtos ID:</label>
-          <select
+            <MenuItem value="">
+              <em>Selecione um Cliente</em>
+            </MenuItem>
+            {clientes.length > 0 ? (
+              clientes.map(cliente => (
+                <MenuItem key={cliente.id} value={cliente.id}>
+                  {cliente.nome}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>Carregando clientes...</MenuItem>
+            )}
+          </Select>
+        </FormControl>
+        <TextField
+          label="Valores"
+          type="number"
+          id="valores"
+          name="valores"
+          value={formData.valores}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          label="Data"
+          type="date"
+          id="data"
+          name="data"
+          value={formData.data}
+          onChange={handleChange}
+          required
+        />
+        <FormControl sx={{ m: 1, minWidth: 120 }}>
+          <InputLabel id="produtosID-label">Produtos</InputLabel>
+          <Select
+            labelId="produtosID-label"
             id="produtosID"
-            name="produtosID"
+            multiple
             value={formData.produtosID}
             onChange={handleProdutosChange}
-            required
-            multiple
-            className="border p-2 w-full text-black"
+            renderValue={(selected) => selected.join(', ')}
           >
-            <option value="">Selecione um ou mais produtos</option>
-            {Produtos.map(produto => (
-              <option key={produto.id} value={produto.id}>{produto.nome} - {produto.marca} - {produto.valor}</option>
-            ))}
-          </select>
-        </div>
-
-        <button type="submit" className="bg-blue-500 text-white p-2 w-full hover:underline">Enviar</button>
-      </form>
-      <button
-        type="button"
-        className="container flex mt-12 justify-between mb-8 hover:underline"
-        onClick={() => window.history.back()}
-      >
-        Voltar
-      </button>
-    </div>
+              {Produtos.map(produto => (
+                <MenuItem key={produto.id} value={produto.id}>
+                  <Checkbox checked={formData.produtosID.indexOf(produto.id) > -1}/>
+                  <ListItemText primary={`${produto.nome} - ${produto.marca} - ${produto.valor}`} />
+                </MenuItem>
+              ))}
+          </Select>
+        </FormControl>
+        <Stack direction="row" spacing={6} sx={{ m: 2 }}>
+          <Button variant="contained" type="submit" endIcon={<SendIcon />}>
+            Enviar
+          </Button>
+          <Button variant="outlined" onClick={() => window.history.back()}>
+            Voltar
+          </Button>
+        </Stack>
+      </FormControl>
+    </Box>
   );
 }

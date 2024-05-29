@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import Link from "next/link";
 import { ReactNode } from "react";
-import ThemeProvider from './ThemeProvider'; // ajuste o caminho conforme necessário
+import ThemeProvider from './ThemeProvider';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
@@ -10,7 +9,10 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 
-const inter = Inter({ subsets: ["latin"] });
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import'@fontsource/roboto/700.css';
 
 export const metadata: Metadata = {
   title: "Cadastro",
@@ -19,7 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <ThemeProvider>
           <AppBar position="static">
             <Toolbar>
