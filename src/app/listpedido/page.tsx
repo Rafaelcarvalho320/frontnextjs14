@@ -1,7 +1,9 @@
 "use client";
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '@fontsource/roboto/300.css';
+import { Box, Typography, List, ListItem, ListItemText, Button, ListItemIcon } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 
 export default function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
@@ -48,48 +50,33 @@ export default function Pedidos() {
   };
 
   return (
-    <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-      <div className="flex items-center justify-between mb-4">
-        <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">Todos os Pedidos</h5>
-      </div>
-      <div className="flow-root">
-        <ul role="list" className="divide-y divide-gray-200 dark:divide-gray-700">
-          {pedidos.length > 0 ? (
-            pedidos.map(pedido => (
-              <li key={pedido.id} className="py-3 sm:py-4">
-                <div className="flex items-center">
-                  <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
-                    <span className="mr-2">ID:</span>
-                    {pedido.id}
-                  </div>
-                  <div className="flex-1 min-w-0 ml-4">
-                    <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                      {getClienteNome(pedido.cliente_id)}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                      Valor: R$ {pedido.valores}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                      Data: {pedido.data}
-                    </p>
-                    <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                      Produto(s): {getProdutoNome(pedido.produtos_id)}
-                    </p>
-                  </div>
-                </div>
-              </li>
-            ))
-          ) : (
-            <p>Nenhum pedido encontrado.</p>
-          )}
-        </ul>
-      </div>
-      <button
-        type="button"
-        className="container flex mt-12 justify-between mb-8 hover:underline"
-        onClick={() => window.history.back()}>
-          Voltar
-      </button>     
-    </div>
+    <Box sx={{ p: 4 }}>
+      <Typography variant="h5" mb={4} fontWeight="bold" color="text.primary">Todos os Pedidos</Typography>
+      <List>
+        {pedidos.length > 0 ? (
+          pedidos.map(pedido => (
+            <ListItem key={pedido.id} alignItems="flex-start" divider>
+              <ListItemIcon>
+              <ChecklistIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={<Typography variant="h6" component="span" color="text.primary">ID: {pedido.id}</Typography>}
+                secondary={
+                  <>
+                    <Typography variant="body2" color="text.secondary">Cliente: {getClienteNome(pedido.cliente_id)}</Typography>
+                    <Typography variant="body2" color="text.secondary">Valor: R$ {pedido.valores}</Typography>
+                    <Typography variant="body2" color="text.secondary">Data: {pedido.data}</Typography>
+                    <Typography variant="body2" color="text.secondary">Produto(s): {getProdutoNome(pedido.produtos_id)}</Typography>
+                  </>
+                }
+              />
+            </ListItem>
+          ))
+        ) : (
+          <Typography variant="body1" color="text.secondary">Nenhum pedido encontrado.</Typography>
+        )}
+      </List>
+      <Button variant="outlined" startIcon={<ArrowBackIcon />} onClick={() => window.history.back()}>Voltar</Button>
+    </Box>
   );
 }
