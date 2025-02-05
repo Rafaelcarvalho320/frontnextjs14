@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, Button} from '@mui/material';
 import Link from 'next/link';
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
         </Typography>
 
         <Box display="flex" flexDirection="column">
-          <Button variant= "outlined" component={Link} href="/cliente">
+          <Button variant="outlined" component={Link} href="/cliente">
             Cliente
           </Button>
           <Button variant="outlined" component={Link} href="/endereco">

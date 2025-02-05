@@ -42,11 +42,14 @@ export default function Pedidos() {
     const cliente = clientes.find(cliente => cliente.id === clienteId);
     return cliente ? cliente.nome : 'Cliente não encontrado';
   };
-  const getProdutoNome = (produtoIds) => {
+  const getProdutoNome = (produtoIds: number[]) => {
+    if (!Array.isArray(produtoIds)) {
+      return 'Nenhum produto encontrado';
+    }
     return produtoIds.map(produtoId => {
       const produto = produtos.find(produto => produto.id === produtoId);
       return produto ? produto.nome : 'Produto não encontrado';
-    }).join(', ');  
+    }).join(', ');
   };
 
   return (
